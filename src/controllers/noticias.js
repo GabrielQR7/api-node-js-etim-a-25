@@ -53,9 +53,10 @@ module.exports = {
             const dados = {
 
                 id: result.insertId,
-                titulo,
-                conteudo,
-                imagem
+                usu_id, 
+                not_titulo, 
+                not_conteudo,
+                not_imagem
 
             };
 
