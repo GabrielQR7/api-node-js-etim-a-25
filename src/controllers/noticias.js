@@ -84,11 +84,51 @@ module.exports = {
 
     async editarNoticias(request, response) {
         try {
-            return response.status(200).json({
+
+            //parametros recebidos pelo corpo da requisição
+            const { usu_id, not_titulo, not_conteudo, not_imagem } = request.body;
+
+            //parametros recebido pela URL via params ex: /usuario/1
+            const { id } = request.params;
+
+            const sql = `
+                UPDATE NOTICIAS SET
+                    usu_id =?, not_titulo =?, not_conteudo =?, not_imagem =?
+                WHERE
+                    not_id =?;
+            `;
+
+            //preparo do array com dados que serao atualizados
+            const values = [usu_id, not_titulo, not_conteudo, not_imagem];
+
+            //execuçao e obtençao de confirmaçao da atualizaçao realizada
+            cons [result] = await db.query(sql, values);
+
+            if (result.affectedRows === 0){
+
+                return response.status(404).json({
+                    sucesso: false,
+                    mensagem: `Usuario ${id} não encontrado`,
+                    dados: null
+                });
+            }
+
+            return response.status(200).json
+            
+            const dados = {
+                usu_id, 
+                not_titulo, 
+                not_conteudo, 
+                not_imagem
+            };
+
+
+            ({
                 sucesso: true, 
                 mensagem: 'Alteração no cadastro de noticia', 
                 dados: null
             });
+
         } catch (error) {
             return response.status(500).json({
                 sucesso: false, 
@@ -97,6 +137,8 @@ module.exports = {
             });
         }
     }, 
+
+
     async apagarNoticias(request, response) {
         try {
             return response.status(200).json({
